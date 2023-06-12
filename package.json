@@ -1,8 +1,13 @@
 {
   "dependencies": {
-    "express": "^4.18.2"
+    "express": "^4.18.2",
+    "firebase": "^9.22.2"
   },
   "devDependencies": {
     "jest": "^29.5.0"
+  },
+  "scripts": {
+    "dev" : "NODE.ENV = development node connection.js",
+    "prod" : ""    
   }
 }
