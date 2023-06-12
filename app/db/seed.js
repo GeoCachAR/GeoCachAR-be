@@ -1,20 +1,48 @@
-import { ref, set, update, child, push} from "firebase/database";
-import db from "./connection.js"
+import { ref, update } from "firebase/database";
+import db from "./connection.js";
 import names from "./namesTest.js";
 
+Promise.all(names.map((name) => seedUserData(name))).then((TorFs) => {
+    TorFs.every((x) => x)
+        ? (() => {
+              console.log("Something something it went right");
+              process.exit();
+          })()
+        : (() => {
+              console.log("It went very very wrong");
+              process.exit();
+          })();
+});
 
-names.forEach((name) => {
-    const newPostKey = push(child(ref(db), 'users')).key
-    seedUserData(name, newPostKey)
-})
-
-function seedUserData (name, key) {
-    update(ref(db), {
-    ['users/' + name]:{
-        name: name,
-        email: "email",
-    }
+export function seedUserData(
+    uid,
+    name,
+    email,
+    location,
+    avatar_image,
+    starred_maps,
+    current_maps,
+    maps_completed,
+    referred,
+    modified,
+    active,
+    created_at
+) {
+    return update(ref(db), {
+        ["users/" + uid]: {
+            name,
+            email,
+            location,
+            avatar_image,
+            starred_maps,
+            current_maps,
+            maps_completed,
+            referred,
+            modified,
+            active,
+            created_at,
+        },
     })
+        .then(() => true)
+        .catch(() => false);
 }
-
-export default seedUserData;
