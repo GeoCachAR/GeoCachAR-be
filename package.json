@@ -6,13 +6,16 @@
     "nodemon": "^2.0.22"
   },
   "devDependencies": {
+    "husky": "^8.0.3",
     "jest": "^29.5.0"
   },
   "scripts": {
     "dev": "NODE_ENV=development nodemon app.js",
     "start": "node app.js",
-    "seed" : "NODE_ENV=development node ./app/db/seed.js",
-    "seed-prod": "NODE_ENV=production node seed.js"
+    "seed": "NODE_ENV=development node ./app/db/seed.js",
+    "seed-prod": "NODE_ENV=production node seed.js",
+    "prepare": "husky install",
+    "test": "jest"
   },
   "main": "app.js"
 }
