@@ -8,4 +8,4 @@ const testingFirebaseConfig = {
     appId: "1:638163802644:web:3d072e9f109d4924cf6501"
   };
 
-  module.exports = testingFirebaseConfig
+export default testingFirebaseConfig
