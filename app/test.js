@@ -1,3 +1,5 @@
 describe("A Test", () => {
-  expect(1).toEqual(1);
+  test("A Test", () => {
+    expect(1).toBe(1);
+  });
 });
