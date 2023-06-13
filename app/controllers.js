@@ -1,4 +1,4 @@
-import { postLoginDetails, postUser } from "./models";
+import { postLoginDetails, postUser } from "./models.js";
 
 const checkLogin = (request, response, next) => {
     const postRequest = request.body;
