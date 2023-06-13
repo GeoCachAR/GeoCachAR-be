@@ -10,10 +10,6 @@ beforeEach(() => {
         .concat(maps.map((map) => seedMapData(map)));
 });
 
-// afterAll(() => {
-//     // process.exit();
-// });
-
 describe("POST", () => {
     describe("account", () => {
         test("Should let a user log in", () => {
@@ -27,7 +23,7 @@ describe("POST", () => {
                 .expect(200)
                 .then((response) => {
                     const { uid } = response.body;
-                    expect(uid).toBe("KvFKEsaFXXVhkRHKUUOX6gXeyMX2");
+                    expect(uid).toBe("lFdvdh4a5mUpIcd9d8EdXtdGYH83");
                 });
         });
         test("Should return a 404 not found if the email doesn't exist", () => {
@@ -71,5 +67,50 @@ describe("POST", () => {
             });
         });
     });
+});
 
+describe('api/users', () => {
+    describe('post', () => {
+        it('should be able to create an account with email password', () => {
+            const postRequest = {
+                email: "test2@email.com",
+                password: "Coding1",
+            };
+            return request(app).post('/api/users').send(postRequest).expect(201).then((response) => {
+                const {uid} = response.body
+                expect(uid).toEqual(expect.any(String))
+            })
+        });
+        it('should return 403 when an e-mail already exists', () => {
+            const postRequest = {
+                email: "test@test.com",
+                password: "Coding1",
+            };
+            return request(app).post('/api/users').send(postRequest).expect(403).then((response) => {
+                const msg = response.body.msg
+                expect(msg).toEqual('Email already in use')
+            })
+        });
+        it('should return invalid password and 400 ', () => {
+            const postRequest = {
+                email: "test5@test.com",
+                password: "Codin",
+            };
+        return request(app).post('/api/users').send(postRequest).expect(400).then((response) => {
+            const msg = response.body.msg
+            expect(msg).toEqual(expect.any(String))
+        })
+        });
+        it('should return an error if the data is formatted incorrectly ', () => {
+            const postRequest = `email,password\nemail@test.com,1234`;
+            return request(app)
+            .post("/api/account")
+            .send(postRequest)
+            .expect(400)
+            .then((response) => {
+                const { msg } = response.body;
+                expect(msg).toBe("Invalid body format");
+            });            
+        });
+    });
 });

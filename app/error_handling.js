@@ -4,7 +4,14 @@ export function firebaseErrors(err, request, response, next) {
     }
     if (err.code === "auth/wrong-password") {
         response.status(403).send({msg: "Incorrect password"})
-    }next(err)
+    }
+    if (err.code === "auth/email-already-in-use") {
+        response.status(403).send({msg: "Email already in use"})
+    }
+    if (err.code === "auth/weak-password") {
+        response.status(400).send({msg: "Invalid password"})
+    }
+    next(err)
 }
 
 export const customErrors = (err, request, response, next) => {
