@@ -1,9 +1,9 @@
 import app from "./firebaseApp.js";
-import { getAuth, signInWithEmailAndPassword, signOut } from "firebase/auth";
+import { getAuth, signInWithEmailAndPassword,createUserWithEmailAndPassword, signOut } from "firebase/auth";
 
 const auth = getAuth(app);
 
-const postLoginDetails = ({ email, password }) => {
+export const postLoginDetails = ({ email, password }) => {
     return signInWithEmailAndPassword(auth, email, password).then(
         (userCredential) => {
             signOut(auth);
@@ -12,4 +12,15 @@ const postLoginDetails = ({ email, password }) => {
     );
 };
 
-export default postLoginDetails;
+export const postUser = ({email, password}) => {
+    return createUserWithEmailAndPassword(auth, email, password)
+    .then
+    (
+        (userCredential) => {
+            signOut(auth);
+            return userCredential.user.uid;
+        }
+    );
+}
+
+
