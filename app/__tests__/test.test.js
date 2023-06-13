@@ -73,7 +73,7 @@ describe('api/users', () => {
     describe('post', () => {
         it('should be able to create an account with email password', () => {
             const postRequest = {
-                email: "test2@email.com",
+                email: "test@email.com",
                 password: "Coding1",
             };
             return request(app).post('/api/users').send(postRequest).expect(201).then((response) => {
