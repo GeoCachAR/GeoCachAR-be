@@ -44,5 +44,32 @@ describe("POST", () => {
                     expect(msg).toBe("Email not found");
                 });
         });
+        test('should return 403 when the incorrect password is passed ', () => {
+            const postRequest = {
+                email: "email@email.com",
+                password: "1234567",
+            };
+            return request(app)
+                .post("/api/account")
+                .send(postRequest)
+                .expect(403)
+                .then((response) => {
+                    const { msg } = response.body;
+                    expect(msg).toBe("Incorrect password");
+                });
+            
+        });
+        test('should return 400 when body is formatted incorrectly', () => {
+            const postRequest = `email,password\nemail@email.com,1234`;
+            return request(app)
+            .post("/api/account")
+            .send(postRequest)
+            .expect(400)
+            .then((response) => {
+                const { msg } = response.body;
+                expect(msg).toBe("Invalid body format");
+            });
+        });
     });
+
 });
