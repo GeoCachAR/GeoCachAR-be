@@ -41,17 +41,11 @@ export function seedUserData({
 }
 
 export function seedMapData({ mapID, waypoints, location }) {
-    const { title, description, Latitude, Longtitude } = waypoints;
 
     return update(ref(db), {
         ["/maps/" + mapID]: {
             location: location,
-            waypoints: {
-                title: title,
-                description: description,
-                Latitude: Latitude,
-                Longtitude: Longtitude,
-            },
+            waypoints, 
         },
     });
 }

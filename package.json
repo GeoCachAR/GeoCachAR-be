@@ -13,8 +13,9 @@
         "dev": "NODE_ENV=development nodemon app.js",
         "start": "node app.js",
         "seed": "NODE_ENV=development node ./app/db/seed.js",
-        "seed-prod": "NODE_ENV=production node seed.js",
-        "test": "NODE_OPTIONS=--experimental-vm-modules npx jest"
+        "seed-prod": "NODE_ENV=production node ./app/db/seedProd.js",
+        "test": "NODE_OPTIONS=--experimental-vm-modules npx jest",
+        "main": "app.js"
     },
     "main": "app.js"
 }
