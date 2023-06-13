@@ -1,9 +1,18 @@
-import { initializeApp } from "firebase/app";
+import express from "express";
 
-import express from 'express';
+import checkLogin from "./app/controllers.js";
+import handleErrors from "./app/error_handling.js";
 
 const app = express();
 
-const {PORT = 9090} = process.env
+app.use(express.json());
 
-app.listen(PORT, () => console.log('listening on port 9090'))
+app.post("/api/account", checkLogin);
+
+app.use(handleErrors);
+
+const { PORT = 9090 } = process.env;
+
+app.listen(PORT);
+
+export default app;
