@@ -19,13 +19,13 @@ export const postLoginDetails = ({ email, password }) => {
   );
 };
 
-export const postUser = ({ email, password }) => {
+export const postUser = ({ email, password, name }) => {
   return createUserWithEmailAndPassword(auth, email, password).then(
     (userCredential) => {
       return update(ref(db), {
         ["users/" + userCredential.user.uid]: {
           uid: userCredential.user.uid,
-          name: "Update your name...",
+          name: name,
           email: email,
           location: { Latitude: "", Longtitude: "" },
           avatar_image: "",
