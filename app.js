@@ -15,6 +15,8 @@ app.get('/api/maps', ctlrs.getMaps)
 
 app.get('/api/maps/:map_id', ctlrs.getMapById)
 
+app.delete('/api/users/:user_id', ctlrs.deleteUser)
+
 app.use(firebaseErrors);
 
 app.use(customErrors);
