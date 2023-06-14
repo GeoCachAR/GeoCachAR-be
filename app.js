@@ -13,6 +13,8 @@ app.post('/api/users', ctlrs.createAccount)
 
 app.get('/api/maps', ctlrs.getMaps)
 
+app.get('/api/maps/:map_id', ctlrs.getMapById)
+
 app.use(firebaseErrors);
 
 app.use(customErrors);

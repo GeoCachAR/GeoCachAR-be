@@ -144,7 +144,7 @@ describe('api/users', () => {
   });
 });
 
-describe.only('GET /api/maps', () => {
+describe('GET /api/maps', () => {
   it('should return a list of all maps', () => {
     return request(app)
       .get('/api/maps')
@@ -167,11 +167,58 @@ describe.only('GET /api/maps', () => {
             { Latitude: 0, Longtitude: 0, description: '', title: 'clue two' },
           ],
         };
-
         expect(keys).toContain('100');
         expect(keys).toContain('101');
         expect(keys).toContain('102');
         expect(response.body.maps[100]).toMatchObject(testMapObj);
       });
+  });
+});
+
+describe('GET /api/maps/:map_id', () => {
+  it.only('should return the map with the given id', () => {
+    return request(app)
+    .get('/api/maps/101')
+    .expect(200)
+    .then((response) => {
+      const map = response.body.map
+      console.log(map.waypoints)
+      const resultMap =  {
+        mapName: 'Jay Map',
+        mapLocation: 'London',
+        waypoints: [
+          {
+            title: 'clue one',
+            description: '',
+            Latitude: 0,
+            Longtitude: 0,
+          },
+          {
+            title: 'clue two',
+            description: '',
+            Latitude: 0,
+            Longtitude: 0,
+          },
+        ],
+        location: {
+          Latitude: 0,
+          Longtitude: 0,
+          LatDelta: 0,
+          LonDelta: 0,
+          radius: 100,
+        },
+      }
+      expect(map).toEqual(resultMap)    
+    })
+  });
+  it('should return a 404 not found if the given id is not currently in use', () => {
+    return request (app)
+
+    .get('/api/maps/1000')
+    .expect(404)
+    .then((response) => {
+      const msg = response.body.msg
+      expect(msg).toBe('Error, map not found')
+    })
   });
 });

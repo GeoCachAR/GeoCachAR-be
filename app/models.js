@@ -59,3 +59,19 @@ export const fetchMaps = () => {
       console.error(error);
     });
 };
+
+export const fetchMapById = (mapId) => {
+  return get(child(refDB, `maps/${mapId}`))
+  .then((snapshot) => {
+    if (snapshot.exists()) {
+      return snapshot.val();
+    } else {
+      return Promise.reject(
+        {
+          msg: `Error, map not found`,
+          code: 404
+      }
+    )
+    }
+  })
+}
