@@ -1,4 +1,4 @@
-import { postLoginDetails, postUser } from "./models.js";
+import { fetchMaps, postLoginDetails, postUser } from "./models.js";
 
 const checkLogin = (request, response, next) => {
     const postRequest = request.body;
@@ -15,4 +15,12 @@ const createAccount = (request, response, next) => {
     }).catch((err)=> next(err));
 }
 
-export default {checkLogin, createAccount};
+const getMaps = (request, response, next) => {
+    return fetchMaps()
+      .then((maps) => {
+        return response.status(200).send({ maps: maps })
+      })
+      .catch((err) => console.log(err));
+}
+
+export default {checkLogin, createAccount, getMaps};

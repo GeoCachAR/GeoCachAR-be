@@ -11,6 +11,8 @@ app.post("/api/account",jsonBodyCheck, ctlrs.checkLogin);
 
 app.post('/api/users', ctlrs.createAccount)
 
+app.get('/api/maps', ctlrs.getMaps)
+
 app.use(firebaseErrors);
 
 app.use(customErrors);
