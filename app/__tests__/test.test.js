@@ -73,8 +73,9 @@ describe('api/users', () => {
     describe('post', () => {
         it('should be able to create an account with email password', () => {
             const postRequest = {
-                email: "test@email.com",
+                email: "rightnow@email.com",
                 password: "Coding1",
+                name: 'test1st',
             };
             return request(app).post('/api/users').send(postRequest).expect(201).then((response) => {
                 const {uid} = response.body
@@ -85,6 +86,7 @@ describe('api/users', () => {
             const postRequest = {
                 email: "test@test.com",
                 password: "Coding1",
+                name: 'hello'
             };
             return request(app).post('/api/users').send(postRequest).expect(403).then((response) => {
                 const msg = response.body.msg
@@ -95,6 +97,7 @@ describe('api/users', () => {
             const postRequest = {
                 email: "test5@test.com",
                 password: "Codin",
+                name: 'lksjdf'
             };
         return request(app).post('/api/users').send(postRequest).expect(400).then((response) => {
             const msg = response.body.msg
@@ -112,5 +115,17 @@ describe('api/users', () => {
                 expect(msg).toBe("Invalid body format");
             });            
         });
+        it('should accept a username in addition', () => {
+            const postRequest = {
+                email: "itstillworks@test.com",
+                password: "Coding",
+                name: 'TestUserFinally',
+            }
+            return request(app).post('/api/users').send(postRequest).expect(201).then((response) => {
+                const {uid} = response.body
+                expect(uid).toEqual(expect.any(String))
+            })
+        });
+        
     });
 });
