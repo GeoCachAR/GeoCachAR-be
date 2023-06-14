@@ -1,4 +1,4 @@
-import { fetchMaps, postLoginDetails, postUser } from "./models.js";
+import { fetchMapById, fetchMaps, postLoginDetails, postUser } from "./models.js";
 
 const checkLogin = (request, response, next) => {
     const postRequest = request.body;
@@ -23,4 +23,12 @@ const getMaps = (request, response, next) => {
       .catch((err) => console.log(err));
 }
 
-export default {checkLogin, createAccount, getMaps};
+const getMapById = (request, response, next) => {
+    const mapId = request.params.map_id
+    return fetchMapById(mapId).then((map) => {
+        return response.status(200).send({map:map})
+    })
+    .catch((err) => next(err));
+}
+
+export default {checkLogin, createAccount, getMaps, getMapById};
