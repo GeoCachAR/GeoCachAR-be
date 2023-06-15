@@ -1,34 +1,55 @@
-import { fetchMapById, fetchMaps, postLoginDetails, postUser } from "./models.js";
+import {
+  fetchMapById,
+  fetchMaps,
+  postLoginDetails,
+  postUser,
+  removeUser,
+} from "./models.js";
 
 const checkLogin = (request, response, next) => {
-    const postRequest = request.body;
-    postLoginDetails(postRequest)
-        .then((uid) => {
-            response.status(200).send({ uid: uid });
-        })
-        .catch((err) => next(err));
+  const postRequest = request.body;
+  postLoginDetails(postRequest)
+    .then((uid) => {
+      response.status(200).send({ uid: uid });
+    })
+    .catch((err) => next(err));
 };
 
 const createAccount = (request, response, next) => {
-    return postUser(request.body).then((uid) => {
-        return response.status(201).send({uid:uid})
-    }).catch((err)=> next(err));
-}
-
-const getMaps = (request, response, next) => {
-    return fetchMaps()
-      .then((maps) => {
-        return response.status(200).send({ maps: maps })
-      })
-      .catch((err) => console.log(err));
-}
-
-const getMapById = (request, response, next) => {
-    const mapId = request.params.map_id
-    return fetchMapById(mapId).then((map) => {
-        return response.status(200).send({map:map})
+  return postUser(request.body)
+    .then((uid) => {
+      return response.status(201).send({ uid: uid });
     })
     .catch((err) => next(err));
-}
+};
 
-export default {checkLogin, createAccount, getMaps, getMapById};
+const getMaps = (request, response, next) => {
+  return fetchMaps()
+    .then((maps) => {
+      return response.status(200).send({ maps: maps });
+    })
+    .catch((err) => console.log(err));
+};
+
+const getMapById = (request, response, next) => {
+  const mapId = request.params.map_id;
+  return fetchMapById(mapId)
+    .then((map) => {
+      return response.status(200).send({ map: map });
+    })
+    .catch((err) => next(err));
+};
+
+const deleteUser = (request, response, next) => {
+  const deleteId = request.params.user_id;
+  const postRequest = request.body;
+  removeUser(deleteId, postRequest)
+    .then(() => {
+      response.status(204).send();
+    })
+    .catch((err) => {
+      next(err);
+    });
+};
+
+export default { checkLogin, createAccount, getMaps, getMapById, deleteUser };
