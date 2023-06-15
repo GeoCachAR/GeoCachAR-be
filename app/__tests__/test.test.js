@@ -72,7 +72,7 @@ describe("api/users", () => {
   describe("post", () => {
     it("should be able to create an account with email password", () => {
       const postRequest = {
-        email: "kieranTestingDeleteAuthbbb@email.com",
+        email: "usercredential@email.com",
         password: "Coding1",
         name: "testnowwwwwww",
       };
@@ -232,4 +232,25 @@ describe("DELETE /api/users/:user_id", () => {
       .send(postRequest)
       .expect(204);
   });
+});
+
+describe("PATCH /api/users/:user_id", () => {
+  describe("Should update username", () => {
+    it.only("should return updated username", () => {
+      const newUserName = {
+        name: "stevie",
+      };
+      return request(app)
+        .patch("/api/users/KvFKEsaFXXVhkRHKUUOX6gXeyMX2")
+        .send(newUserName)
+        .expect(200)
+        .then((response) => {
+          const user = response.body;
+          expect(user.user).toBe("stevie");
+          expect(typeof user.user).toBe("string");
+        });
+    });
+  });
+  describe("Should update password", () => {});
+  describe("Should change email", () => {});
 });

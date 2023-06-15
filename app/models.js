@@ -41,6 +41,7 @@ export const postUser = ({ email, password, name }) => {
         },
       }).then(() => {
         signOut(auth);
+
         return userCredential.user.uid;
       });
     }
@@ -102,17 +103,10 @@ export const removeUser = (deleteId, { email, password }) => {
   });
 };
 
-// export const testingLoggedInUser = (auth, email, password,name) => {
-//   console.log("auth.currentUser:", auth.currentUser);
-// };
-// const user = auth.currentUser;
-// export const removeUser = () => {
-//   deleteUser(user)
-//     .then(() => {
-//       console.log("User deleted from firebase auth");
-//     })
-//     .catch((error) => {
-//       // An error ocurred
-//       // ...
-//     });
-// };
+export const updatedUserName = (updateUserID, nameToChange) => {
+  const updates = {};
+  updates[`users/${updateUserID}/name`] = nameToChange.name;
+  return update(refDB, updates).then(()=>{
+    return nameToChange.name
+  })
+};

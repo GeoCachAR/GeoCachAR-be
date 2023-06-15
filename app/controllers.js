@@ -4,6 +4,7 @@ import {
   postLoginDetails,
   postUser,
   removeUser,
+  updatedUserName,
 } from "./models.js";
 
 const checkLogin = (request, response, next) => {
@@ -52,4 +53,15 @@ const deleteUser = (request, response, next) => {
     });
 };
 
-export default { checkLogin, createAccount, getMaps, getMapById, deleteUser };
+const changeUserName = (request, response, next) => {
+  const updateUserID = request.params.user_id
+  const nameToChange = request.body
+  updatedUserName(updateUserID, nameToChange).then((user)=>{
+    response.status(200).send({user})
+  }).catch((err)=>{
+    next(err)
+  })
+
+}
+
+export default { checkLogin, createAccount, getMaps, getMapById, deleteUser, changeUserName };
