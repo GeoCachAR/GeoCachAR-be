@@ -10,12 +10,12 @@ beforeEach(() => {
     .concat(maps.map((map) => seedMapData(map)));
 });
 
-describe("POST", () => {
+describe("POST /api/account", () => {
   describe("account", () => {
     test("Should let a user log in", () => {
       const postRequest = {
-        email: "NewPerson@email.com",
-        password: "test123",
+        email: "kierantesting@email.com",
+        password: "Coding1",
       };
       return request(app)
         .post("/api/account")
@@ -23,7 +23,7 @@ describe("POST", () => {
         .expect(200)
         .then((response) => {
           const { uid } = response.body;
-          expect(uid).toBe("lFdvdh4a5mUpIcd9d8EdXtdGYH83");
+          expect(uid).toBe("AhBnY2aw0YO86pivEEOBl6Pm1hB3");
         });
     });
     test("Should return a 404 not found if the email doesn't exist", () => {
@@ -72,9 +72,9 @@ describe("api/users", () => {
   describe("post", () => {
     it("should be able to create an account with email password", () => {
       const postRequest = {
-        email: "TestingOnceMore@email.com",
+        email: "kieranTestingDeleteAuthbbb@email.com",
         password: "Coding1",
-        name: "test1st",
+        name: "testnowwwwwww",
       };
       return request(app)
         .post("/api/users")
@@ -128,7 +128,7 @@ describe("api/users", () => {
     });
     it("should accept a username in addition", () => {
       const postRequest = {
-        email: "itstillworksas@test.com",
+        email: "itstillgfworksas@test.com",
         password: "Coding",
         name: "TestUserFinally",
       };
@@ -182,7 +182,6 @@ describe("GET /api/maps/:map_id", () => {
       .expect(200)
       .then((response) => {
         const map = response.body.map;
-        console.log(map.waypoints);
         const resultMap = {
           mapName: "Jay Map",
           mapLocation: "London",
@@ -223,7 +222,14 @@ describe("GET /api/maps/:map_id", () => {
 });
 
 describe("DELETE /api/users/:user_id", () => {
-  it.only("should delete the user account", () => {
-    return request(app).delete("/api/users/KvFKEsaFXXVhkRHKUUOX6gXeyMX2").expect(204)
+  it("should delete the user account", () => {
+    const postRequest = {
+      email: "s@s.com",
+      password: "123456",
+    };
+    return request(app)
+      .delete("/api/users/KWQOrqqUGcYdKzzzu68V5NbsF3i1")
+      .send(postRequest)
+      .expect(204);
   });
 });

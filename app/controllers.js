@@ -3,7 +3,7 @@ import {
   fetchMaps,
   postLoginDetails,
   postUser,
-  removeUser
+  removeUser,
 } from "./models.js";
 
 const checkLogin = (request, response, next) => {
@@ -42,12 +42,13 @@ const getMapById = (request, response, next) => {
 
 const deleteUser = (request, response, next) => {
   const deleteId = request.params.user_id;
-  removeUser(deleteId)
+  const postRequest = request.body;
+  removeUser(deleteId, postRequest)
     .then(() => {
       response.status(204).send();
     })
     .catch((err) => {
-      console.log(err);
+      next(err);
     });
 };
 
