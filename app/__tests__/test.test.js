@@ -3,18 +3,13 @@ import { seedUserData, seedMapData } from "../db/seed.js";
 import maps from "../db/mapTest.js";
 import users from "../db/usersTest.js";
 import app from "../../app.js";
-import { ref, remove } from "firebase/database";
-import db from "../db/connection.js";
-import {
-    createUserWithEmailAndPassword,
-    deleteUser,
-    getAuth,
-    signInWithEmailAndPassword,
-    signOut,
-} from "firebase/auth";
-import firebaseApp from "../firebaseApp.js";
 
-const uids = { "s@s": "uid-here", notstevie: "uid-here", kieran: "uid-here" };
+const uids = {
+    "s@s": "uid-here",
+    notstevie: "uid-here",
+    kieran: "uid-here",
+    "s3@email": "uid-here",
+};
 
 const beforeButOurFunc = () => {
     const auth = getAuth(firebaseApp);
@@ -30,6 +25,7 @@ const beforeButOurFunc = () => {
             password: "The password",
             name: "notstevie",
         },
+        { email: "stevie3@email.com", password: "123456" },
     ];
     const startWith = [
         { email: "kierantesting@email.com", password: "Coding1" },
@@ -41,6 +37,7 @@ const beforeButOurFunc = () => {
             password: "The password",
             name: "notstevie",
         },
+        { email: "stevie3@email.com", password: "123456" },
     ];
     return Promise.all(
         allUsers.map(({ email, password }) =>
@@ -84,6 +81,7 @@ const beforeButOurFunc = () => {
             uids["kieran"] = IDs[0];
             uids["s@s"] = IDs[3];
             uids["notstevie"] = IDs[4];
+            uids["s3@email"] = IDs[5];
             return users
                 .map((user) => seedUserData(user))
                 .concat(maps.map((map) => seedMapData(map)));
@@ -107,7 +105,7 @@ describe("POST /api/account", () => {
                 )
                 .then((response) => {
                     const { uid } = response.body;
-                    expect(uid).toBe("AhBnY2aw0YO86pivEEOBl6Pm1hB3");
+                    expect(uid).toBe(uids["kieran"]);
                 });
         });
         test("Should return a 404 not found if the email doesn't exist", () => {
@@ -259,7 +257,6 @@ describe("GET /api/maps", () => {
             .expect(200)
             .then((response) => {
                 const keys = Object.keys(response.body.maps);
-
                 const testMapObj = {
                     arUrl: expect.any(String),
                     location: {
@@ -311,12 +308,14 @@ describe("GET /api/maps/:map_id", () => {
                             description: "",
                             latitude: 0,
                             longitude: 0,
+                            code: expect.any(String),
                         },
                         {
                             title: "clue two",
                             description: "",
                             latitude: 0,
                             longitude: 0,
+                            code: expect.any(String),
                         },
                     ],
                     location: {
@@ -357,9 +356,9 @@ describe("DELETE /api/users/:user_id", () => {
 
 describe("PATCH /api/users/:user_id", () => {
     describe("Should update username", () => {
-        it("should return updated username", () => {
+        it.only("should return updated username", () => {
             const newUserName = {
-                name: "stevie",
+                name: "terry",
             };
             return beforeButOurFunc()
                 .then(() =>
@@ -370,11 +369,30 @@ describe("PATCH /api/users/:user_id", () => {
                 )
                 .then((response) => {
                     const user = response.body;
-                    expect(user.user).toBe("stevie");
-                    expect(typeof user.user).toBe("string");
+                    expect(typeof user.name).toBe("string");
+                    expect(user.name).toBe("terry");
                 });
         });
     });
-    describe("Should update password", () => {});
-    describe("Should change email", () => {});
+    describe("Should update email", () => {
+        it("should return updated email", () => {
+            const newUserEmail = {
+                oldEmail: "stevie3@email.com",
+                newEmail: "stevie4@email.com",
+                password: "123456",
+            };
+            return beforeButOurFunc().then(() =>
+                request(app)
+                    .patch(`/api/users/${uids["s3@email"]}`)
+                    .send(newUserEmail)
+                    .expect(200)
+                    .then((response) => {
+                        const user = response.body;
+                        expect(typeof user.email).toBe("string");
+                        expect(user.email).toBe("stevie4@email.com");
+                    })
+            );
+        });
+    });
+    describe("Should change password", () => {});
 });

@@ -17,7 +17,7 @@ app.get('/api/maps/:map_id', ctlrs.getMapById)
 
 app.delete('/api/users/:user_id', ctlrs.deleteUser)
 
-app.patch('/api/users/:user_id', ctlrs.changeUserName)
+app.patch('/api/users/:user_id', ctlrs.changeUserDetails)
 
 app.use(firebaseErrors);
 
