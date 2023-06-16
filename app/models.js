@@ -1,13 +1,14 @@
-import app from "./firebaseApp.js";
+import app from './firebaseApp.js';
 import {
   getAuth,
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
   signOut,
   deleteUser,
-} from "firebase/auth";
-import db from "./db/connection.js";
-import { update, ref, get, child, remove } from "firebase/database";
+  updateEmail,
+} from 'firebase/auth';
+import db from './db/connection.js';
+import { update, ref, get, child, remove } from 'firebase/database';
 
 const auth = getAuth(app);
 const refDB = ref(db);
@@ -25,14 +26,14 @@ export const postUser = ({ email, password, name }) => {
   return createUserWithEmailAndPassword(auth, email, password).then(
     (userCredential) => {
       return update(refDB, {
-        ["users/" + userCredential.user.uid]: {
+        ['users/' + userCredential.user.uid]: {
           name: name,
           email: email,
-          location: { Latitude: "", Longtitude: "" },
-          avatar_image: "",
-          starred_maps: "",
-          current_maps: "",
-          maps_completed: "",
+          location: { Latitude: '', Longtitude: '' },
+          avatar_image: '',
+          starred_maps: '',
+          current_maps: '',
+          maps_completed: '',
           referred: 0,
           modified: Date.now(),
           active: true,
@@ -47,12 +48,12 @@ export const postUser = ({ email, password, name }) => {
 };
 
 export const fetchMaps = () => {
-  return get(child(refDB, "maps"))
+  return get(child(refDB, 'maps'))
     .then((snapshot) => {
       if (snapshot.exists()) {
         return snapshot.val();
       } else {
-        console.log("No data available");
+        console.log('No data available');
       }
     })
     .catch((error) => {
@@ -85,7 +86,7 @@ export const removeUser = (deleteId, { email, password }) => {
           return deleteUser(user).then(() => {});
         })
         .then(() => {
-          const taskRef = ref(db, "users/" + deleteId);
+          const taskRef = ref(db, 'users/' + deleteId);
           return remove(taskRef).then(() => {
             return Promise.resolve();
           });
@@ -94,11 +95,28 @@ export const removeUser = (deleteId, { email, password }) => {
   });
 };
 
-export const updatedUserName = (updateUserID, nameToChange) => {
-  //if its a name on the object ...
+export const updatedUserName = (updateUserID, detailToChange) => {
   const updates = {};
-  updates[`users/${updateUserID}/name`] = nameToChange.name;
+  updates[`users/${updateUserID}/name`] = detailToChange.name;
   return update(refDB, updates).then(() => {
-    return nameToChange.name;
+    return detailToChange.name;
   });
+};
+
+export const updatedUserEmail = (
+  updateUserID,
+  { oldEmail, newEmail, password }
+) => {
+  const updates = {};
+  updates[`users/${updateUserID}/email`] = newEmail;
+  return update(refDB, updates)
+    .then(() => {
+      return signInWithEmailAndPassword(auth, oldEmail, password);
+    })
+    .then(({ user }) => {
+      return updateEmail(user, newEmail);
+    })
+    .then(() => {
+      return newEmail;
+    });
 };
