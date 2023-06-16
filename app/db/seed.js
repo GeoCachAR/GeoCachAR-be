@@ -40,12 +40,13 @@ export function seedUserData({
     });
 }
 
-export function seedMapData({ mapID, mapName, mapLocation, waypoints, location }) {
+export function seedMapData({ mapID, mapName, mapLocation, waypoints, location, arUrl }) {
 
     return update(ref(db), {
         ["/maps/" + mapID]: {
             mapName: mapName,
             mapLocation: mapLocation, 
+            arUrl: arUrl,
             location: location,
             waypoints, 
         },
