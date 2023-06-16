@@ -1,8 +1,8 @@
-import request from "supertest";
-import { seedUserData, seedMapData } from "../db/seed.js";
-import maps from "../db/mapTest.js";
-import users from "../db/usersTest.js";
-import app from "../../app.js";
+import request from 'supertest';
+import { seedUserData, seedMapData } from '../db/seed.js';
+import maps from '../db/mapTest.js';
+import users from '../db/usersTest.js';
+import app from '../../app.js';
 
 beforeEach(() => {
   return users
@@ -10,74 +10,74 @@ beforeEach(() => {
     .concat(maps.map((map) => seedMapData(map)));
 });
 
-describe("POST /api/account", () => {
-  describe("account", () => {
-    test("Should let a user log in", () => {
+describe('POST /api/account', () => {
+  describe('account', () => {
+    test('Should let a user log in', () => {
       const postRequest = {
-        email: "kierantesting@email.com",
-        password: "Coding1",
+        email: 'stevie@steviewonder.com',
+        password: '123456',
       };
       return request(app)
-        .post("/api/account")
+        .post('/api/account')
         .send(postRequest)
         .expect(200)
         .then((response) => {
           const { uid } = response.body;
-          expect(uid).toBe("AhBnY2aw0YO86pivEEOBl6Pm1hB3");
+          expect(uid).toBe('0WT3bKxOkFfsYrZIRwC5ROP7ILy2');
         });
     });
     test("Should return a 404 not found if the email doesn't exist", () => {
       const postRequest = {
-        email: "emali@email.com",
-        password: "test123",
+        email: 'emali@email.com',
+        password: 'test123',
       };
       return request(app)
-        .post("/api/account")
+        .post('/api/account')
         .send(postRequest)
         .expect(404)
         .then((response) => {
           const { msg } = response.body;
-          expect(msg).toBe("Email not found");
+          expect(msg).toBe('Email not found');
         });
     });
-    test("should return 403 when the incorrect password is passed ", () => {
+    test('should return 403 when the incorrect password is passed ', () => {
       const postRequest = {
-        email: "email@email.com",
-        password: "1234567",
+        email: 'email@email.com',
+        password: '1234567',
       };
       return request(app)
-        .post("/api/account")
+        .post('/api/account')
         .send(postRequest)
         .expect(403)
         .then((response) => {
           const { msg } = response.body;
-          expect(msg).toBe("Incorrect password");
+          expect(msg).toBe('Incorrect password');
         });
     });
-    test("should return 400 when body is formatted incorrectly", () => {
+    test('should return 400 when body is formatted incorrectly', () => {
       const postRequest = `email,password\nemail@email.com,1234`;
       return request(app)
-        .post("/api/account")
+        .post('/api/account')
         .send(postRequest)
         .expect(400)
         .then((response) => {
           const { msg } = response.body;
-          expect(msg).toBe("Invalid body format");
+          expect(msg).toBe('Invalid body format');
         });
     });
   });
 });
 
-describe("api/users", () => {
-  describe("post", () => {
-    it("should be able to create an account with email password", () => {
+describe('api/users', () => {
+  describe('post', () => {
+    it('should be able to create an account with email password', () => {
       const postRequest = {
-        email: "usercredential@email.com",
-        password: "Coding1",
-        name: "testnowwwwwww",
+        email: 'usercredential@email.com',
+        password: 'Coding1',
+        name: 'testnowwwwwww',
       };
       return request(app)
-        .post("/api/users")
+        .post('/api/users')
         .send(postRequest)
         .expect(201)
         .then((response) => {
@@ -85,29 +85,29 @@ describe("api/users", () => {
           expect(uid).toEqual(expect.any(String));
         });
     });
-    it("should return 403 when an e-mail already exists", () => {
+    it('should return 403 when an e-mail already exists', () => {
       const postRequest = {
-        email: "test@test.com",
-        password: "Coding1",
-        name: "hello",
+        email: 'test@test.com',
+        password: 'Coding1',
+        name: 'hello',
       };
       return request(app)
-        .post("/api/users")
+        .post('/api/users')
         .send(postRequest)
         .expect(403)
         .then((response) => {
           const msg = response.body.msg;
-          expect(msg).toEqual("Email already in use");
+          expect(msg).toEqual('Email already in use');
         });
     });
-    it("should return invalid password and 400 ", () => {
+    it('should return invalid password and 400 ', () => {
       const postRequest = {
-        email: "test5@test.com",
-        password: "Codin",
-        name: "lksjdf",
+        email: 'test5@test.com',
+        password: 'Codin',
+        name: 'lksjdf',
       };
       return request(app)
-        .post("/api/users")
+        .post('/api/users')
         .send(postRequest)
         .expect(400)
         .then((response) => {
@@ -115,25 +115,25 @@ describe("api/users", () => {
           expect(msg).toEqual(expect.any(String));
         });
     });
-    it("should return an error if the data is formatted incorrectly ", () => {
+    it('should return an error if the data is formatted incorrectly ', () => {
       const postRequest = `email,password\nemail@test.com,1234`;
       return request(app)
-        .post("/api/account")
+        .post('/api/account')
         .send(postRequest)
         .expect(400)
         .then((response) => {
           const { msg } = response.body;
-          expect(msg).toBe("Invalid body format");
+          expect(msg).toBe('Invalid body format');
         });
     });
-    it("should accept a username in addition", () => {
+    it('should accept a username in addition', () => {
       const postRequest = {
-        email: "itstillgfworksas@test.com",
-        password: "Coding",
-        name: "TestUserFinally",
+        email: 'itstillgfworksas@test.com',
+        password: 'Coding',
+        name: 'TestUserFinally',
       };
       return request(app)
-        .post("/api/users")
+        .post('/api/users')
         .send(postRequest)
         .expect(201)
         .then((response) => {
@@ -144,10 +144,10 @@ describe("api/users", () => {
   });
 });
 
-describe("GET /api/maps", () => {
-  it("should return a list of all maps", () => {
+describe('GET /api/maps', () => {
+  it('should return a list of all maps', () => {
     return request(app)
-      .get("/api/maps")
+      .get('/api/maps')
       .expect(200)
       .then((response) => {
         const keys = Object.keys(response.body.maps);
@@ -160,41 +160,41 @@ describe("GET /api/maps", () => {
             Longtitude: 0,
             radius: 100,
           },
-          mapLocation: "London",
-          mapName: "Geo Map",
+          mapLocation: 'London',
+          mapName: 'Geo Map',
           waypoints: [
-            { Latitude: 0, Longtitude: 0, description: "", title: "clue one" },
-            { Latitude: 0, Longtitude: 0, description: "", title: "clue two" },
+            { Latitude: 0, Longtitude: 0, description: '', title: 'clue one' },
+            { Latitude: 0, Longtitude: 0, description: '', title: 'clue two' },
           ],
         };
-        expect(keys).toContain("100");
-        expect(keys).toContain("101");
-        expect(keys).toContain("102");
+        expect(keys).toContain('100');
+        expect(keys).toContain('101');
+        expect(keys).toContain('102');
         expect(response.body.maps[100]).toMatchObject(testMapObj);
       });
   });
 });
 
-describe("GET /api/maps/:map_id", () => {
-  it("should return the map with the given id", () => {
+describe('GET /api/maps/:map_id', () => {
+  it('should return the map with the given id', () => {
     return request(app)
-      .get("/api/maps/101")
+      .get('/api/maps/101')
       .expect(200)
       .then((response) => {
         const map = response.body.map;
         const resultMap = {
-          mapName: "Jay Map",
-          mapLocation: "London",
+          mapName: 'Jay Map',
+          mapLocation: 'London',
           waypoints: [
             {
-              title: "clue one",
-              description: "",
+              title: 'clue one',
+              description: '',
               Latitude: 0,
               Longtitude: 0,
             },
             {
-              title: "clue two",
-              description: "",
+              title: 'clue two',
+              description: '',
               Latitude: 0,
               Longtitude: 0,
             },
@@ -210,47 +210,64 @@ describe("GET /api/maps/:map_id", () => {
         expect(map).toEqual(resultMap);
       });
   });
-  it("should return a 404 not found if the given id is not currently in use", () => {
+  it('should return a 404 not found if the given id is not currently in use', () => {
     return request(app)
-      .get("/api/maps/1000")
+      .get('/api/maps/1000')
       .expect(404)
       .then((response) => {
         const msg = response.body.msg;
-        expect(msg).toBe("Error, map not found");
+        expect(msg).toBe('Error, map not found');
       });
   });
 });
 
-describe("DELETE /api/users/:user_id", () => {
-  it("should delete the user account", () => {
+describe('DELETE /api/users/:user_id', () => {
+  it('should delete the user account', () => {
     const postRequest = {
-      email: "s@s.com",
-      password: "123456",
+      email: 's@s.com',
+      password: '123456',
     };
     return request(app)
-      .delete("/api/users/KWQOrqqUGcYdKzzzu68V5NbsF3i1")
+      .delete('/api/users/KWQOrqqUGcYdKzzzu68V5NbsF3i1')
       .send(postRequest)
       .expect(204);
   });
 });
 
-describe("PATCH /api/users/:user_id", () => {
-  describe("Should update username", () => {
-    it.only("should return updated username", () => {
+describe('PATCH /api/users/:user_id', () => {
+  describe('Should update username', () => {
+    it.only('should return updated username', () => {
       const newUserName = {
-        name: "stevie",
+        name: 'terry',
       };
       return request(app)
-        .patch("/api/users/KvFKEsaFXXVhkRHKUUOX6gXeyMX2")
+        .patch('/api/users/0WT3bKxOkFfsYrZIRwC5ROP7ILy2')
         .send(newUserName)
         .expect(200)
         .then((response) => {
           const user = response.body;
-          expect(user.user).toBe("stevie");
-          expect(typeof user.user).toBe("string");
+          expect(typeof user.name).toBe('string');
+          expect(user.name).toBe('terry');
         });
     });
   });
-  describe("Should update password", () => {});
-  describe("Should change email", () => {});
+  describe('Should update email', () => {
+    it.only('should return updated email', () => {
+      const newUserEmail = {
+        oldEmail: 'stevie3@email.com',
+        newEmail: 'stevie4@email.com',
+        password: '123456'
+      };
+      return request(app)
+        .patch('/api/users/3DWOALsGXGSsqmZVQ5wd6iexkKo2')
+        .send(newUserEmail)
+        .expect(200)
+        .then((response) => {
+          const user = response.body;
+          expect(typeof user.email).toBe('string');
+          expect(user.email).toBe('stevie4@email.com');
+        });
+    });
+  });
+  describe('Should change password', () => {});
 });

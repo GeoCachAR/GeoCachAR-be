@@ -5,7 +5,8 @@ import {
   postUser,
   removeUser,
   updatedUserName,
-} from "./models.js";
+  updatedUserEmail,
+} from './models.js';
 
 const checkLogin = (request, response, next) => {
   const postRequest = request.body;
@@ -53,15 +54,35 @@ const deleteUser = (request, response, next) => {
     });
 };
 
-const changeUserName = (request, response, next) => {
-  const updateUserID = request.params.user_id
-  const nameToChange = request.body
-  updatedUserName(updateUserID, nameToChange).then((user)=>{
-    response.status(200).send({user})
-  }).catch((err)=>{
-    next(err)
-  })
+const changeUserDetails = (request, response, next) => {
+  const updateUserID = request.params.user_id;
+  const detailToChange = request.body;
+  if (detailToChange.hasOwnProperty('name')) {
+    updatedUserName(updateUserID, detailToChange)
+      .then((name) => {
+        response.status(200).send({ name });
+      })
+      .catch((err) => {
+        next(err);
+      });
+  }
+  if (detailToChange.hasOwnProperty('newEmail')) {
+    
+    updatedUserEmail(updateUserID, detailToChange)
+      .then((email) => {
+        response.status(200).send({ email });
+      })
+      .catch((err) => {
+        next(err);
+      });
+  }
+};
 
-}
-
-export default { checkLogin, createAccount, getMaps, getMapById, deleteUser, changeUserName };
+export default {
+  checkLogin,
+  createAccount,
+  getMaps,
+  getMapById,
+  deleteUser,
+  changeUserDetails,
+};
