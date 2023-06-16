@@ -159,8 +159,8 @@ set(ref(db), {
         location: {
           Latitude: 51.549657793651335,
           Longtitude: -0.19767465976955112,
-          LatDelta: 0.04,
-          LonDelta: 0.05,
+          LatDelta: 0.005,
+          LonDelta: 0.005,
           radius: 100,
         },
       }
