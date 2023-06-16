@@ -26,7 +26,6 @@ export const postUser = ({ email, password, name }) => {
     (userCredential) => {
       return update(refDB, {
         ["users/" + userCredential.user.uid]: {
-          uid: userCredential.user.uid,
           name: name,
           email: email,
           location: { Latitude: "", Longtitude: "" },
@@ -41,7 +40,6 @@ export const postUser = ({ email, password, name }) => {
         },
       }).then(() => {
         signOut(auth);
-
         return userCredential.user.uid;
       });
     }
@@ -91,22 +89,16 @@ export const removeUser = (deleteId, { email, password }) => {
           return remove(taskRef).then(() => {
             return Promise.resolve();
           });
-          return new Promise((resolve, reject) => {
-            resolve(
-              remove(taskRef).then(() => {
-                console.log("user deleted from our db hopefully");
-              })
-            );
-          });
         })
     );
   });
 };
 
 export const updatedUserName = (updateUserID, nameToChange) => {
+  //if its a name on the object ...
   const updates = {};
   updates[`users/${updateUserID}/name`] = nameToChange.name;
-  return update(refDB, updates).then(()=>{
-    return nameToChange.name
-  })
+  return update(refDB, updates).then(() => {
+    return nameToChange.name;
+  });
 };
