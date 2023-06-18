@@ -3,91 +3,89 @@ import { seedUserData, seedMapData } from "../db/seed.js";
 import maps from "../db/mapTest.js";
 import users from "../db/usersTest.js";
 import app from "../../app.js";
+import {
+    getAuth,
+    signInWithEmailAndPassword,
+    createUserWithEmailAndPassword,
+    deleteUser,
+    signOut,
+} from "firebase/auth";
+import { remove, ref } from "firebase/database";
+import firebaseApp from "../firebaseApp.js";
+import db from "../db/connection.js";
 
 const uids = {
+    kieran: "05aeq9C7n0eclKk8FqmOGxeCmfS2",
     "s@s": "uid-here",
-    notstevie: "uid-here",
-    kieran: "uid-here",
-    "s3@email": "uid-here",
+    "s3@e": "uid-here",
 };
-
-const beforeButOurFunc = () => {
+/*
+const allUsers = [
+    { email: "kierantesting@email.com", password: "Coding1" },
+    { email: "email@email.com", password: "test123" },
+    { email: "usercredential@email.com", password: "Coding1" },
+    { email: "test@test.com", password: "Coding1" },
+    { email: "test5@test.com", password: "Codin" },
+    { email: "itstillgfworksas@test.com", password: "Coding" },
+    { email: "s@s.com", password: "123456" },
+    { email: "stevie3@email.com", password: "123456" },
+    { email: "stevie4@email.com", password: "123456" },
+];
+*/
+beforeAll(() => {
     const auth = getAuth(firebaseApp);
-    const allUsers = [
-        { email: "kierantesting@email.com", password: "Coding1" },
-        { email: "email@email.com", password: "test123" },
+    const toDelete = [
         { email: "usercredential@email.com", password: "Coding1" },
-        { email: "test@test.com", password: "Coding1" },
         { email: "itstillgfworksas@test.com", password: "Coding" },
-        { email: "s@s.com", password: "123456" },
-        {
-            email: "example.test@email.com",
-            password: "The password",
-            name: "notstevie",
-        },
-        { email: "stevie3@email.com", password: "123456" },
+        { email: "stevie4@email.com", password: "123456" },
+        // { email: "email@email.com", password: "test123" },
     ];
-    const startWith = [
-        { email: "kierantesting@email.com", password: "Coding1" },
-        { email: "email@email.com", password: "test123" },
-        { email: "test@test.com", password: "Coding1" },
+    const toCreate = [
         { email: "s@s.com", password: "123456" },
-        {
-            email: "example.test@email.com",
-            password: "The password",
-            name: "notstevie",
-        },
         { email: "stevie3@email.com", password: "123456" },
+        // { email: "email@email.com", password: "test123" },
     ];
     return Promise.all(
-        allUsers.map(({ email, password }) =>
-            signInWithEmailAndPassword(auth, email, password)
-                .then(({ user }) => {
-                    deleteUser(user);
-                    signOut(auth);
-                    return user.uid;
-                })
-                .catch(() => {
-                    // console.log(email, "Failed to sign in")
-                })
+        toDelete.map(
+            ({ email, password }) =>
+                setTimeout(() =>
+                    signInWithEmailAndPassword(auth, email, password)
+                        .then(({ user }) => {
+                            deleteUser(user);
+                            signOut(auth);
+                            setTimeout(() => {}, 250);
+                            return user.uid;
+                        })
+                        .catch((err) => {})
+                ),
+            250
         )
     )
-        .then((uids) =>
-            Promise.all(
-                uids
-                    .filter((x) => x === undefined)
-                    .map((uid) =>
-                        remove(ref(db, `users/${uid}`)).catch(() => {
-                            // console.log("Delete Auth error")
-                        })
-                    )
-            )
-        )
+        .then((uids) => remove(ref(db))) // Deletes the database here <<----
         .then(() =>
             Promise.all(
-                startWith.map(({ email, password }) =>
+                toCreate.map(({ email, password }) =>
                     createUserWithEmailAndPassword(auth, email, password)
                         .then(({ user }) => {
                             signOut(auth);
+                            setTimeout(() => {}, 250);
                             return user.uid;
                         })
-                        .catch(() => {
-                            // console.log(email, "Creating Auth error");
-                        })
+                        .catch((err) => {})
                 )
             )
         )
         .then((IDs) => {
-            uids["kieran"] = IDs[0];
             uids["s@s"] = IDs[3];
-            uids["notstevie"] = IDs[4];
-            uids["s3@email"] = IDs[5];
+            uids["s3@e"] = IDs[4];
             return users
                 .map((user) => seedUserData(user))
                 .concat(maps.map((map) => seedMapData(map)));
         })
-        .catch((err) => console.log(err));
-};
+        .catch((err) => {});
+});
+
+beforeEach(() => setTimeout(() => {}, 250));
 
 describe("POST /api/account", () => {
     describe("account", () => {
@@ -96,13 +94,10 @@ describe("POST /api/account", () => {
                 email: "kierantesting@email.com",
                 password: "Coding1",
             };
-            return beforeButOurFunc()
-                .then(() =>
-                    request(app)
-                        .post("/api/account")
-                        .send(postRequest)
-                        .expect(200)
-                )
+            return request(app)
+                .post("/api/account")
+                .send(postRequest)
+                .expect(200)
                 .then((response) => {
                     const { uid } = response.body;
                     expect(uid).toBe(uids["kieran"]);
@@ -113,13 +108,10 @@ describe("POST /api/account", () => {
                 email: "emali@email.com",
                 password: "test123",
             };
-            return beforeButOurFunc()
-                .then(() =>
-                    request(app)
-                        .post("/api/account")
-                        .send(postRequest)
-                        .expect(404)
-                )
+            return request(app)
+                .post("/api/account")
+                .send(postRequest)
+                .expect(404)
                 .then((response) => {
                     const { msg } = response.body;
                     expect(msg).toBe("Email not found");
@@ -130,13 +122,10 @@ describe("POST /api/account", () => {
                 email: "email@email.com",
                 password: "1234567",
             };
-            return beforeButOurFunc()
-                .then(() =>
-                    request(app)
-                        .post("/api/account")
-                        .send(postRequest)
-                        .expect(403)
-                )
+            return request(app)
+                .post("/api/account")
+                .send(postRequest)
+                .expect(403)
                 .then((response) => {
                     const { msg } = response.body;
                     expect(msg).toBe("Incorrect password");
@@ -144,13 +133,10 @@ describe("POST /api/account", () => {
         });
         test("should return 400 when body is formatted incorrectly", () => {
             const postRequest = `email,password\nemail@email.com,1234`;
-            return beforeButOurFunc()
-                .then(() =>
-                    request(app)
-                        .post("/api/account")
-                        .send(postRequest)
-                        .expect(400)
-                )
+            return request(app)
+                .post("/api/account")
+                .send(postRequest)
+                .expect(400)
                 .then((response) => {
                     const { msg } = response.body;
                     expect(msg).toBe("Invalid body format");
@@ -167,13 +153,10 @@ describe("api/users", () => {
                 password: "Coding1",
                 name: "testnowwwwwww",
             };
-            return beforeButOurFunc()
-                .then(() =>
-                    request(app)
-                        .post("/api/users")
-                        .send(postRequest)
-                        .expect(201)
-                )
+            return request(app)
+                .post("/api/users")
+                .send(postRequest)
+                .expect(201)
                 .then((response) => {
                     const { uid } = response.body;
                     expect(uid).toEqual(expect.any(String));
@@ -185,13 +168,10 @@ describe("api/users", () => {
                 password: "Coding1",
                 name: "hello",
             };
-            return beforeButOurFunc()
-                .then(() =>
-                    request(app)
-                        .post("/api/users")
-                        .send(postRequest)
-                        .expect(403)
-                )
+            return request(app)
+                .post("/api/users")
+                .send(postRequest)
+                .expect(403)
                 .then((response) => {
                     const msg = response.body.msg;
                     expect(msg).toEqual("Email already in use");
@@ -203,13 +183,10 @@ describe("api/users", () => {
                 password: "Codin",
                 name: "lksjdf",
             };
-            return beforeButOurFunc()
-                .then(() =>
-                    request(app)
-                        .post("/api/users")
-                        .send(postRequest)
-                        .expect(400)
-                )
+            return request(app)
+                .post("/api/users")
+                .send(postRequest)
+                .expect(400)
                 .then((response) => {
                     const msg = response.body.msg;
                     expect(msg).toEqual(expect.any(String));
@@ -217,13 +194,10 @@ describe("api/users", () => {
         });
         it("should return an error if the data is formatted incorrectly ", () => {
             const postRequest = `email,password\nemail@test.com,1234`;
-            return beforeButOurFunc()
-                .then(() =>
-                    request(app)
-                        .post("/api/account")
-                        .send(postRequest)
-                        .expect(400)
-                )
+            return request(app)
+                .post("/api/account")
+                .send(postRequest)
+                .expect(400)
                 .then((response) => {
                     const { msg } = response.body;
                     expect(msg).toBe("Invalid body format");
@@ -235,13 +209,10 @@ describe("api/users", () => {
                 password: "Coding",
                 name: "TestUserFinally",
             };
-            return beforeButOurFunc()
-                .then(() =>
-                    request(app)
-                        .post("/api/users")
-                        .send(postRequest)
-                        .expect(201)
-                )
+            return request(app)
+                .post("/api/users")
+                .send(postRequest)
+                .expect(201)
                 .then((response) => {
                     const { uid } = response.body;
                     expect(uid).toEqual(expect.any(String));
@@ -302,6 +273,7 @@ describe("GET /api/maps/:map_id", () => {
                 const resultMap = {
                     mapName: "Jay Map",
                     mapLocation: "London",
+                    arUrl: expect.any(String),
                     waypoints: [
                         {
                             title: "clue one",
@@ -345,28 +317,23 @@ describe("DELETE /api/users/:user_id", () => {
             email: "s@s.com",
             password: "123456",
         };
-        return beforeButOurFunc().then(() =>
-            request(app)
-                .delete(`/api/users/${uids["s@s"]}`)
-                .send(postRequest)
-                .expect(204)
-        );
+        return request(app)
+            .delete(`/api/users/${uids["s@s"]}`)
+            .send(postRequest)
+            .expect(204);
     });
 });
 
 describe("PATCH /api/users/:user_id", () => {
     describe("Should update username", () => {
-        it.only("should return updated username", () => {
+        it("should return updated username", () => {
             const newUserName = {
                 name: "terry",
             };
-            return beforeButOurFunc()
-                .then(() =>
-                    request(app)
-                        .patch(`/api/users/${uids["notstevie"]}`)
-                        .send(newUserName)
-                        .expect(200)
-                )
+            return request(app)
+                .patch(`/api/users/${uids["s@s"]}`)
+                .send(newUserName)
+                .expect(200)
                 .then((response) => {
                     const user = response.body;
                     expect(typeof user.name).toBe("string");
@@ -381,17 +348,15 @@ describe("PATCH /api/users/:user_id", () => {
                 newEmail: "stevie4@email.com",
                 password: "123456",
             };
-            return beforeButOurFunc().then(() =>
-                request(app)
-                    .patch(`/api/users/${uids["s3@email"]}`)
-                    .send(newUserEmail)
-                    .expect(200)
-                    .then((response) => {
-                        const user = response.body;
-                        expect(typeof user.email).toBe("string");
-                        expect(user.email).toBe("stevie4@email.com");
-                    })
-            );
+            return request(app)
+                .patch(`/api/users/${uids["s3@e"]}`)
+                .send(newUserEmail)
+                .expect(200)
+                .then((response) => {
+                    const user = response.body;
+                    expect(typeof user.email).toBe("string");
+                    expect(user.email).toBe("stevie4@email.com");
+                });
         });
     });
     describe("Should change password", () => {});
