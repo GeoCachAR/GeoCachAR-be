@@ -18,6 +18,7 @@ const uids = {
     kieran: "05aeq9C7n0eclKk8FqmOGxeCmfS2",
     "s@s": "uid-here",
     "s3@e": "uid-here",
+    t99: "yZ5WmwC8RMbPDYKYDSoeidIcXPs1",
 };
 /*
 const allUsers = [
@@ -30,10 +31,12 @@ const allUsers = [
     { email: "s@s.com", password: "123456" },
     { email: "stevie3@email.com", password: "123456" },
     { email: "stevie4@email.com", password: "123456" },
+    { email: "thedevelopingdevs@gmail.com", password: "123457" } (varying password)
 ];
 */
+const auth = getAuth(firebaseApp);
+
 beforeAll(() => {
-    const auth = getAuth(firebaseApp);
     const toDelete = [
         { email: "usercredential@email.com", password: "Coding1" },
         { email: "itstillgfworksas@test.com", password: "Coding" },
@@ -76,8 +79,8 @@ beforeAll(() => {
             )
         )
         .then((IDs) => {
-            uids["s@s"] = IDs[3];
-            uids["s3@e"] = IDs[4];
+            uids["s@s"] = IDs[0];
+            uids["s3@e"] = IDs[1];
             return users
                 .map((user) => seedUserData(user))
                 .concat(maps.map((map) => seedMapData(map)));
@@ -359,5 +362,43 @@ describe("PATCH /api/users/:user_id", () => {
                 });
         });
     });
-    describe("Should change password", () => {});
+    describe("Should change password", () => {
+        test("Should send a reset password email and return 204", () => {
+            const newUserPassword = { email: "TheDevelopingDevs@gmail.com" };
+            return request(app)
+                .patch(`/api/users/${uids["t99"]}`)
+                .send(newUserPassword)
+                .expect(204);
+        });
+    });
+    describe.only("Should update completed maps list", () => {
+        test("Should return 200 and update maps list for current user", () => {
+            const completedMaps = { completed_map: "100" };
+            return request(app)
+                .patch(`/api/users/${uids["t99"]}`)
+                .send(completedMaps)
+                .expect(200)
+                .then(({ body }) => {
+                    const { maps_completed } = body;
+                    expect(maps_completed).toBe("100");
+                });
+        });
+    });
+});
+
+describe.only('/api/users/:uid', () => {
+  describe('Post', () => {
+    it('should update the current maps list', () => {
+      const currentMaps = {current_map: {102:{0: false,
+        1:true}}}
+      return request(app).patch(`/api/users/${uids["t99"]}`)
+      .send(currentMaps)
+      .expect(200)
+      .then(({body}) => {        
+        const {current_maps} = body;
+        expect(current_maps).toMatchObject({102:{0: false,
+            1:true}})
+      })
+    });
+  });
 });
