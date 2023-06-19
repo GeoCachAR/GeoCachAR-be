@@ -127,6 +127,7 @@ export const updatedUserPassword = (email) => {
 };
 
 export const updateCompletedMaps = (detailsToChange, uid) => {
+
     return get(
         child(ref(db, `maps/${detailsToChange.completed_map}/mapName`), "/")
     )
@@ -138,6 +139,29 @@ export const updateCompletedMaps = (detailsToChange, uid) => {
             updates[
                 `users/${uid}/maps_completed/${detailsToChange.completed_map}`
             ] = mapName;
-            return detailsToChange.completed_map;
+
+            return update(refDB, updates)
+        }).then(()=> {
+            return detailsToChange.completed_map
         });
 };
+
+export const updateCurrentMap = (detailsToChange, uid) => {
+
+    return get(
+        child(ref(db, `maps/${Object.keys(detailsToChange.current_map)[0]}/mapName`), "/")
+    )
+        .then((snapshot) => {
+            return snapshot.val();
+        })
+        .then((mapName) => {
+            const updates = {};
+            updates[
+                `users/${uid}/current_maps/${Object.keys(detailsToChange.current_map)[0]}`
+            ] = mapName;
+
+           return update(refDB, updates)
+        }).then(()=> {
+            return detailsToChange.current_map
+        });
+}

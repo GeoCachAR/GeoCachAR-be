@@ -385,3 +385,20 @@ describe("PATCH /api/users/:user_id", () => {
         });
     });
 });
+
+describe.only('/api/users/:uid', () => {
+  describe('Post', () => {
+    it('should update the current maps list', () => {
+      const currentMaps = {current_map: {102:{0: false,
+        1:true}}}
+      return request(app).patch(`/api/users/${uids["t99"]}`)
+      .send(currentMaps)
+      .expect(200)
+      .then(({body}) => {        
+        const {current_maps} = body;
+        expect(current_maps).toMatchObject({102:{0: false,
+            1:true}})
+      })
+    });
+  });
+});

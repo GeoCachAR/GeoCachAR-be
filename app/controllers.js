@@ -8,6 +8,7 @@ import {
     updatedUserEmail,
     updatedUserPassword,
     updateCompletedMaps,
+    updateCurrentMap,
 } from "./models.js";
 
 const checkLogin = (request, response, next) => {
@@ -78,10 +79,20 @@ const changeUserDetails = (request, response, next) => {
             });
     }
     if (detailToChange.hasOwnProperty("completed_map")) {
-        updateCompletedMaps(detailToChange).then((maps) =>
+        updateCompletedMaps(detailToChange, updateUserID).then((maps) =>
             response.status(200).send({ maps_completed: maps })
         );
-    } else {
+
+    } 
+
+    if (detailToChange.hasOwnProperty("current_map")) {
+        updateCurrentMap(detailToChange, updateUserID).then((maps) => 
+            response.status(200).send({ current_maps: maps }) 
+        )
+
+    } 
+    
+    if (detailToChange.hasOwnProperty('email')) {
         updatedUserPassword(detailToChange.email, updateUserID)
             .then(() => response.status(204).send())
             .catch((err) => next(err));
