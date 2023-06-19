@@ -9,7 +9,7 @@ import {
     sendPasswordResetEmail,
 } from "firebase/auth";
 import db from "./db/connection.js";
-import { update, ref, get, child, remove } from "firebase/database";
+import { update, ref, get, child, remove, onValue } from "firebase/database";
 
 const auth = getAuth(app);
 const refDB = ref(db);
@@ -124,4 +124,19 @@ export const updatedUserEmail = (
 
 export const updatedUserPassword = (email) => {
     return sendPasswordResetEmail(auth, email);
+};
+
+export const updateCompletedMaps = (detailsToChange, uid) => {
+    return onValue(ref(db, `maps/${detailsToChange.completed_map}/mapName`))
+        .then((snapshot) => {
+            return [snapshot.val(), snapshot];
+        })
+        .then(([mapName, snapshot]) => {
+            const updates = {};
+            updates[
+                `users/${uid}/maps_completed/${detailsToChange.completed_map}`
+            ] = mapName;
+            return update(refDB, updates).then(() => {});
+        })
+        .then(() => {});
 };

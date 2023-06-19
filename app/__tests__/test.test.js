@@ -362,13 +362,29 @@ describe("PATCH /api/users/:user_id", () => {
                 });
         });
     });
-    describe.only("Should change password", () => {
+    describe("Should change password", () => {
         test("Should send a reset password email and return 204", () => {
             const newUserPassword = { email: "TheDevelopingDevs@gmail.com" };
             return request(app)
                 .patch(`/api/users/${uids["t99"]}`)
                 .send(newUserPassword)
                 .expect(204);
+        });
+    });
+    describe.only("Should update completed maps list", () => {
+        test("Should return 200 and update maps list for current user", () => {
+            const completedMaps = { completed_map: "100" };
+            return request(app)
+                .patch(`/api/users/${uids["t99"]}`)
+                .send(completedMaps)
+                .expect(200)
+                .then(({ body }) => {
+                    const { maps_completed } = body;
+                    expect(maps_completed).toContain("100");
+                    // maps_completed.forEach((map) => {
+                    //     expect(map).toBe(true);
+                    // })
+                });
         });
     });
 });

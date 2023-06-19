@@ -7,6 +7,7 @@ import {
     updatedUserName,
     updatedUserEmail,
     updatedUserPassword,
+    updateCompletedMaps,
 } from "./models.js";
 
 const checkLogin = (request, response, next) => {
@@ -75,8 +76,13 @@ const changeUserDetails = (request, response, next) => {
             .catch((err) => {
                 next(err);
             });
+    }
+    if (detailToChange.hasOwnProperty("completed_map")) {
+        updateCompletedMaps(detailToChange).then((maps) =>
+            response.status(200).send({ maps_completed: maps })
+        );
     } else {
-        updatedUserPassword(detailToChange.email)
+        updatedUserPassword(detailToChange.email, updateUserID)
             .then(() => response.status(204).send())
             .catch((err) => next(err));
     }
