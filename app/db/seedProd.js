@@ -1,161 +1,272 @@
-import {ref, set} from 'firebase/database'
-import db from './connection.js'
+import { ref, set } from 'firebase/database';
+import db from './connection.js';
 
 set(ref(db), {
-    users: {
-        '8Y3o27XpIAfLeOayWqqd3zC4ec83': {
-        name: 'The Developing Devs',
-        email: 'thedevelopingdevs@gmail.com',
-        location: {latitude: 0, longitude: 0},
-        avatar_image: "https://static.wikia.nocookie.net/f95601b6-3961-4dc4-9072-6d7d4e34a76e/scale-to-width/755",
-        starred_maps: '',
-        current_maps: '',
-        maps_completed: '',
-        referred: 5,
-        modified: Date.now(),
-        active: true,
-        created_at: Date.now(),
-    }},
-    maps: {
-      102: {
-        mapName: 'Tom Map',
-        mapLocation: 'Braunton',
-        arUrl: "",
-        waypoints: [
-          {
-            title: 'clue one',
-            description: '',
-            latitude: 0,
-            longitude: 0,
-            code: 839,
-          },
-          {
-            title: 'clue two',
-            description: '',
-            latitude: 0,
-            longitude: 0,
-            code: 934,
-          },
-        ],
-        location: {
-          latitude: 0,
-          longitude: 0,
-          latDelta: 0,
-          lonDelta: 0,
-        },
-      },
-      100: {
-        mapName: 'Geo Map',
-        mapLocation: 'London ',
-        arUrl: "",
-        waypoints: [
-          {
-            title: 'clue one',
-            description: '',
-            latitude: 0,
-            longitude: 0,
-            code: 123,
-          },
-          {
-            title: 'clue two',
-            description: '',
-            latitude: 0,
-            longitude: 0,
-            code: 321,
-          },
-        ],
-        location: {
-          latitude: 0,
-          longitude: 0,
-          latDelta: 0,
-          lonDelta: 0,
-
-        },
-      },
-      103: {
-        mapName: 'NW London Hunt',
-        mapLocation: 'London ',
-        arUrl: "https://geocachar.netlify.app/map-hmtl/jay-map.html",
-        waypoints: [
-          {
-            title: 'Clue 1',
-            description: 'Sway',
-            latitude: 51.55201314381003,
-            longitude: -0.19604067517332155,
-            code: '248',
-          },
-          {
-            title: 'Clue 2',
-            description: 'Pause thorny flower',
-            latitude: 51.55169602340144,
-            longitude: -0.19228935889455837,
-            code: '671',
-          },
-          {
-            title: 'Clue 3',
-            description: 'Dark big cat...',
-            latitude: 51.5514008942535,
-            longitude: -0.19194621751619295,
-            code: '085',
-          },
-          {
-            title: 'Clue 4',
-            description: 'Beautiful moon...',
-            latitude: 51.550573558905796,
-            longitude: -0.19132867241574616,
-            code: '952',
-          },
-          {
-            title: 'Clue 5',
-            description: 'Speedy head covering...',
-            latitude: 51.549614673429176,
-            longitude: -0.19144087592788794,
-            code: '763',
-          },
-          {
-            title: 'Clue 6',
-            description: 'Weird baskets...',
-            latitude: 51.548992543956835,
-            longitude: -0.19125714460520324,
-            code: '114',
-          },
-          {
-            title: 'Clue 7',
-            description: 'Skint boy...',
-            latitude: 51.548646005177936,
-            longitude: -0.19110971595580925,
-            code: '043',
-          },
-          {
-            title: 'Clue 8',
-            description: 'Little Mermaid St...',
-            latitude: 51.547957765828116,
-            longitude: -0.19803297064039374,
-            code: '366',
-          },
-          {
-            title: 'Clue 9',
-            description: 'Hold me to your ear to hear the sea...',
-            latitude: 51.54675346598928,
-            longitude: -0.20355016454798844,
-            code: '784',
-          },
-          {
-            title: 'Clue 10',
-            description: 'Fiery demise stopping place...',
-            latitude: 51.54681851797777,
-            longitude: -0.20398334128926074,
-            code: '490',
-          }
-        ],
-        location: {
-          latitude: 51.549657793651335,
-          longitude: -0.19767465976955112,
-          latDelta: 0.005,
-          lonDelta: 0.005,
-        },
-      }
+  users: {
+    '8Y3o27XpIAfLeOayWqqd3zC4ec83': {
+      name: 'The Developing Devs',
+      email: 'thedevelopingdevs@gmail.com',
+      location: { latitude: 0, longitude: 0 },
+      avatar_image:
+        'https://static.wikia.nocookie.net/f95601b6-3961-4dc4-9072-6d7d4e34a76e/scale-to-width/755',
+      starred_maps: '',
+      current_maps: '',
+      maps_completed: '',
+      referred: 5,
+      modified: Date.now(),
+      active: true,
+      created_at: Date.now(),
     },
-    
-})
-
+  },
+  maps: {
+    100: {
+      mapName: 'Stevie Map',
+      mapLocation: 'Clitheroe ',
+      arUrl: '',
+      waypoints: [
+        {
+          title: 'clue one',
+          description: '',
+          latitude: 0,
+          longitude: 0,
+          code: 123,
+        },
+        {
+          title: 'clue two',
+          description: '',
+          latitude: 0,
+          longitude: 0,
+          code: 321,
+        },
+      ],
+      location: {
+        latitude: 0,
+        longitude: 0,
+        latDelta: 0,
+        lonDelta: 0,
+      },
+    },
+    102: {
+      mapName: 'Kieran Map',
+      mapLocation: 'Australia',
+      arUrl: '',
+      waypoints: [
+        {
+          title: 'clue one',
+          description: '',
+          latitude: 0,
+          longitude: 0,
+          code: 839,
+        },
+        {
+          title: 'clue two',
+          description: '',
+          latitude: 0,
+          longitude: 0,
+          code: 934,
+        },
+      ],
+      location: {
+        latitude: 0,
+        longitude: 0,
+        latDelta: 0,
+        lonDelta: 0,
+      },
+    },
+    100: {
+      mapName: 'Geo Map',
+      mapLocation: 'London ',
+      arUrl: '',
+      waypoints: [
+        {
+          title: 'clue one',
+          description: '',
+          latitude: 0,
+          longitude: 0,
+          code: 123,
+        },
+        {
+          title: 'clue two',
+          description: '',
+          latitude: 0,
+          longitude: 0,
+          code: 321,
+        },
+      ],
+      location: {
+        latitude: 0,
+        longitude: 0,
+        latDelta: 0,
+        lonDelta: 0,
+      },
+    },
+    103: {
+      mapName: 'NW London Hunt',
+      mapLocation: 'London ',
+      arUrl: 'https://geocachar.netlify.app/map-hmtl/jay-map.html',
+      waypoints: [
+        {
+          title: 'Clue 1',
+          description: 'Sway',
+          latitude: 51.55201314381003,
+          longitude: -0.19604067517332155,
+          code: '248',
+        },
+        {
+          title: 'Clue 2',
+          description: 'Pause thorny flower',
+          latitude: 51.55169602340144,
+          longitude: -0.19228935889455837,
+          code: '671',
+        },
+        {
+          title: 'Clue 3',
+          description: 'Dark big cat...',
+          latitude: 51.5514008942535,
+          longitude: -0.19194621751619295,
+          code: '085',
+        },
+        {
+          title: 'Clue 4',
+          description: 'Beautiful moon...',
+          latitude: 51.550573558905796,
+          longitude: -0.19132867241574616,
+          code: '952',
+        },
+        {
+          title: 'Clue 5',
+          description: 'Speedy head covering...',
+          latitude: 51.549614673429176,
+          longitude: -0.19144087592788794,
+          code: '763',
+        },
+        {
+          title: 'Clue 6',
+          description: 'Weird baskets...',
+          latitude: 51.548992543956835,
+          longitude: -0.19125714460520324,
+          code: '114',
+        },
+        {
+          title: 'Clue 7',
+          description: 'Skint boy...',
+          latitude: 51.548646005177936,
+          longitude: -0.19110971595580925,
+          code: '043',
+        },
+        {
+          title: 'Clue 8',
+          description: 'Little Mermaid St...',
+          latitude: 51.547957765828116,
+          longitude: -0.19803297064039374,
+          code: '366',
+        },
+        {
+          title: 'Clue 9',
+          description: 'Hold me to your ear to hear the sea...',
+          latitude: 51.54675346598928,
+          longitude: -0.20355016454798844,
+          code: '784',
+        },
+        {
+          title: 'Clue 10',
+          description: 'Fiery demise stopping place...',
+          latitude: 51.54681851797777,
+          longitude: -0.20398334128926074,
+          code: '490',
+        },
+      ],
+      location: {
+        latitude: 51.549657793651335,
+        longitude: -0.19767465976955112,
+        latDelta: 0.005,
+        lonDelta: 0.005,
+      },
+    },
+    104: {
+      mapName: 'Braunton Devon Hunt',
+      mapLocation: 'Braunton ',
+      arUrl: 'https://geocachar.netlify.app/map-hmtl/jay-map.html',
+      waypoints: [
+        {
+          title: 'Clue 1',
+          description: 'A place to relax, or get some snacks',
+          latitude: 51.094170111470504,
+          longitude: -4.136707562897513,
+          code: '335',
+        },
+        {
+          title: 'Clue 2',
+          description: 'Riders, get of your bike',
+          latitude: 51.09350879136623,
+          longitude: -4.142159456497731,
+          code: '186',
+        },
+        {
+          title: 'Clue 3',
+          description:
+            'Where there was once a railway line, train drivers would know to stop or go with this ....',
+          latitude: 51.09691133674201,
+          longitude: -4.156420068861221,
+          code: '247',
+        },
+        {
+          title: 'Clue 4',
+          description: "Billy's guns",
+          latitude: 51.09980973397613,
+          longitude: -4.153326858805934,
+          code: '489',
+        },
+        {
+          title: 'Clue 5',
+          description: 'Unlock with this',
+          latitude: 51.101572703907216,
+          longitude: -4.162557606064617,
+          code: '075',
+        },
+        {
+          title: 'Clue 6',
+          description:
+            'The otters path. Barnstaple this way, Braunton that way',
+          latitude: 51.10393787608577,
+          longitude: -4.163444794393262,
+          code: '526',
+        },
+        {
+          title: 'Clue 7',
+          description: 'Underground tree network',
+          latitude: 51.10722998681372,
+          longitude: -4.160557096736031,
+          code: '284',
+        },
+        {
+          title: 'Clue 8',
+          description: 'Herb grinder',
+          latitude: 51.10756133322857,
+          longitude: -4.162694884911725,
+          code: '098',
+        },
+        {
+          title: 'Clue 9',
+          description: 'Suited, lack of colour, big cat',
+          latitude: 51.10858205471909,
+          longitude: -4.164776857156484,
+          code: '848',
+        },
+        {
+          title: 'Clue 10',
+          description: 'Daddy ..... do do do do do do',
+          latitude: 51.1171830078804,
+          longitude: -4.2206615658319055,
+          code: '761',
+        },
+      ],
+      location: {
+        latitude: 51.094170111470504,
+        longitude: -4.136707562897513,
+        latDelta: 0.005,
+        lonDelta: 0.005,
+      },
+    },
+  },
+});
