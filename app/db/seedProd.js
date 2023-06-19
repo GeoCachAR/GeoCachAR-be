@@ -184,7 +184,7 @@ set(ref(db), {
       },
     },
     104: {
-      mapName: 'Braunton Devon Hunt',
+      mapName: 'North Devon Hunt',
       mapLocation: 'Braunton ',
       arUrl: 'https://geocachar.netlify.app/map-hmtl/jay-map.html',
       waypoints: [
@@ -197,7 +197,7 @@ set(ref(db), {
         },
         {
           title: 'Clue 2',
-          description: 'Riders, get of your bike',
+          description: 'Riders, get off your bike',
           latitude: 51.09350879136623,
           longitude: -4.142159456497731,
           code: '186',
