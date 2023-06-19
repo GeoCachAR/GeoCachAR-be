@@ -23,12 +23,6 @@ app.delete("/api/users/:user_id", ctlrs.deleteUser);
 
 app.patch("/api/users/:user_id", ctlrs.changeUserDetails);
 
-
-app.use((err, req, res, next) => {
-    console.log(err);
-    next(err);
-});
-
 app.use(firebaseErrors);
 
 app.use(customErrors);
