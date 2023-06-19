@@ -380,10 +380,7 @@ describe("PATCH /api/users/:user_id", () => {
                 .expect(200)
                 .then(({ body }) => {
                     const { maps_completed } = body;
-                    expect(maps_completed).toContain("100");
-                    // maps_completed.forEach((map) => {
-                    //     expect(map).toBe(true);
-                    // })
+                    expect(maps_completed).toBe("100");
                 });
         });
     });

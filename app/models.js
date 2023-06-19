@@ -127,16 +127,17 @@ export const updatedUserPassword = (email) => {
 };
 
 export const updateCompletedMaps = (detailsToChange, uid) => {
-    return onValue(ref(db, `maps/${detailsToChange.completed_map}/mapName`))
+    return get(
+        child(ref(db, `maps/${detailsToChange.completed_map}/mapName`), "/")
+    )
         .then((snapshot) => {
-            return [snapshot.val(), snapshot];
+            return snapshot.val();
         })
-        .then(([mapName, snapshot]) => {
+        .then((mapName) => {
             const updates = {};
             updates[
                 `users/${uid}/maps_completed/${detailsToChange.completed_map}`
             ] = mapName;
-            return update(refDB, updates).then(() => {});
-        })
-        .then(() => {});
+            return detailsToChange.completed_map;
+        });
 };
