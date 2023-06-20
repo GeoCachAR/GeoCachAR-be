@@ -161,7 +161,7 @@ export const updateCurrentMap = (detailsToChange, uid) => {
             const updates = {};
             updates[
                 `users/${uid}/current_maps/${Object.keys(detailsToChange.current_map)[0]}`
-            ] = mapName;
+            ] = detailsToChange.current_map ;
 
            return update(refDB, updates)
         }).then(()=> {
