@@ -9,6 +9,7 @@ import {
     createUserWithEmailAndPassword,
     deleteUser,
     signOut,
+    fetchSignInMethodsForEmail,
 } from "firebase/auth";
 import { remove, ref } from "firebase/database";
 import firebaseApp from "../firebaseApp.js";
@@ -40,7 +41,7 @@ beforeAll(() => {
     const toDelete = [
         { email: "usercredential@email.com", password: "Coding1" },
         { email: "itstillgfworksas@test.com", password: "Coding" },
-        { email: "stevie4@email.com", password: "123456" },
+        { email: "stevie10@email.com", password: "123456" },
         // { email: "email@email.com", password: "test123" },
     ];
     const toCreate = [
@@ -344,11 +345,11 @@ describe("PATCH /api/users/:user_id", () => {
                 });
         });
     });
-    describe("Should update email", () => {
+    describe.only("Should update email", () => {
         it("should return updated email", () => {
             const newUserEmail = {
                 oldEmail: "stevie3@email.com",
-                newEmail: "stevie4@email.com",
+                newEmail: "stevie11@email.com",
                 password: "123456",
             };
             return request(app)
@@ -358,7 +359,7 @@ describe("PATCH /api/users/:user_id", () => {
                 .then((response) => {
                     const user = response.body;
                     expect(typeof user.email).toBe("string");
-                    expect(user.email).toBe("stevie4@email.com");
+                    expect(user.email).toBe("stevie11@email.com");
                 });
         });
     });
