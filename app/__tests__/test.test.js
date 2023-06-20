@@ -387,7 +387,7 @@ describe("PATCH /api/users/:user_id", () => {
 });
 
 describe('/api/users/:uid', () => {
-  describe('Post', () => {
+  describe('Patch', () => {
     it('should update the current maps list', () => {
       const currentMaps = {current_map: {102:{0: false,
         1:true}}}
