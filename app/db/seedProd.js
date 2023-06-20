@@ -19,7 +19,7 @@ set(ref(db), {
     },
   },
   maps: {
-    100: {
+    101: {
       mapName: 'Stevie Map',
       mapLocation: 'Clitheroe ',
       arUrl: '',
@@ -101,7 +101,7 @@ set(ref(db), {
       },
     },
     103: {
-      mapName: 'NW London Hunt',
+      mapName: 'West Hampstead Hunt',
       mapLocation: 'London ',
       arUrl: 'https://geocachar.netlify.app/map-hmtl/jay-map.html',
       waypoints: [
@@ -177,16 +177,16 @@ set(ref(db), {
         },
       ],
       location: {
-        latitude: 51.549657793651335,
-        longitude: -0.19767465976955112,
-        latDelta: 0.005,
-        lonDelta: 0.005,
+        latitude: 51.54992748424911,
+        longitude: -0.19790290371391434,
+        latDelta: 0.008,
+        lonDelta: 0.008,
       },
     },
     104: {
       mapName: 'North Devon Hunt',
       mapLocation: 'Braunton ',
-      arUrl: 'https://geocachar.netlify.app/map-hmtl/jay-map.html',
+      arUrl: 'https://geocachar.netlify.app/map-hmtl/tom-map.html',
       waypoints: [
         {
           title: 'Clue 1',
@@ -262,10 +262,10 @@ set(ref(db), {
         },
       ],
       location: {
-        latitude: 51.094170111470504,
-        longitude: -4.136707562897513,
-        latDelta: 0.005,
-        lonDelta: 0.005,
+        latitude: 51.108904196225616,
+        longitude: -4.182920067021928,
+        latDelta: 0.05,
+        lonDelta: 0.05,
       },
     },
   },

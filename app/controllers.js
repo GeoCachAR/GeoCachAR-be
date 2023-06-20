@@ -9,6 +9,7 @@ import {
     updatedUserPassword,
     updateCompletedMaps,
     updateCurrentMap,
+    fetchUserDetails,
 } from "./models.js";
 
 const checkLogin = (request, response, next) => {
@@ -99,6 +100,14 @@ const changeUserDetails = (request, response, next) => {
     }
 };
 
+
+const getUserDetails = (request, response, next) => {
+    const userId = request.params.user_id;
+    fetchUserDetails(userId).then((user) => {
+        response.status(200).send({user: user})
+    }).catch((err) => next(err));
+}
+
 export default {
     checkLogin,
     createAccount,
@@ -106,4 +115,6 @@ export default {
     getMapById,
     deleteUser,
     changeUserDetails,
+    getUserDetails
+
 };

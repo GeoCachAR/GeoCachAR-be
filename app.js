@@ -23,6 +23,8 @@ app.delete("/api/users/:user_id", ctlrs.deleteUser);
 
 app.patch("/api/users/:user_id", ctlrs.changeUserDetails);
 
+app.get('/api/users/:user_id', ctlrs.getUserDetails)
+
 app.use(firebaseErrors);
 
 app.use(customErrors);
