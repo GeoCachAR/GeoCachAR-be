@@ -165,3 +165,17 @@ export const updateCurrentMap = (detailsToChange, uid) => {
             return detailsToChange.current_map
         });
 }
+
+export const fetchUserDetails = (uid) => {
+    return get (child(refDB, `users/${uid}`), "/")
+    .then((snapshot) => {
+        if(snapshot.val()) {
+            return snapshot.val()
+        } else {
+            return Promise.reject({
+                msg: `Error, user not found`,
+                code: 404,
+            })
+        }
+    })
+}

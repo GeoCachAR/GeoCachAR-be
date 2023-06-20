@@ -371,7 +371,7 @@ describe("PATCH /api/users/:user_id", () => {
                 .expect(204);
         });
     });
-    describe.only("Should update completed maps list", () => {
+    describe("Should update completed maps list", () => {
         test("Should return 200 and update maps list for current user", () => {
             const completedMaps = { completed_map: "100" };
             return request(app)
@@ -386,7 +386,7 @@ describe("PATCH /api/users/:user_id", () => {
     });
 });
 
-describe.only('/api/users/:uid', () => {
+describe('/api/users/:uid', () => {
   describe('Post', () => {
     it('should update the current maps list', () => {
       const currentMaps = {current_map: {102:{0: false,
@@ -401,4 +401,32 @@ describe.only('/api/users/:uid', () => {
       })
     });
   });
+});
+
+
+describe('GET /api/users/:uid', () => {
+    it('should return a user object for the given UID', () => {
+        return request(app).get(`/api/users/KvFKEsaFXXVhkRHKUUOX6gXeyMX2`)
+        .expect(200)
+        .then((response) => {
+            const user = response.body.user
+            const userKeys = Object.keys(user)
+            expect(user.name).toBe('Frank')
+            expect(user.email).toBe('email@email.com')
+            expect(userKeys).toEqual( [
+                'active',
+                'avatar_image',
+                'created_at',
+                'current_maps',
+                'email',
+                'location',
+                'maps_completed',
+                'modified',
+                'name',
+                'referred',
+                'starred_maps'
+              ])
+            
+        })       
+    });
 });
