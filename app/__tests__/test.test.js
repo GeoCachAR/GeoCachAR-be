@@ -31,7 +31,7 @@ const allUsers = [
     { email: "itstillgfworksas@test.com", password: "Coding" },
     { email: "s@s.com", password: "123456" },
     { email: "stevie3@email.com", password: "123456" },
-    { email: "stevie4@email.com", password: "123456" },
+    { email: "stevie11@email.com", password: "123456" },
     { email: "thedevelopingdevs@gmail.com", password: "123457" } (varying password)
 ];
 */
@@ -345,7 +345,7 @@ describe("PATCH /api/users/:user_id", () => {
                 });
         });
     });
-    describe.only("Should update email", () => {
+    describe("Should update email", () => {
         it("should return updated email", () => {
             const newUserEmail = {
                 oldEmail: "stevie3@email.com",
