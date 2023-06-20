@@ -402,7 +402,7 @@ set(ref(db), {
         latDelta: 0,
         lonDelta: 0,
       },
-    },103: {
+    },120: {
       mapName: 'West Hampstead Hunt',
       mapLocation: 'London ',
       arUrl: 'https://geocachar.netlify.app/map-hmtl/jay-map.html',
