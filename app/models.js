@@ -155,10 +155,11 @@ export const updateCurrentMap = (detailsToChange, uid) => {
             return snapshot.val();
         })
         .then((mapName) => {
+            const mapId = Object.keys(detailsToChange.current_map)[0]
             const updates = {};
             updates[
-                `users/${uid}/current_maps/${Object.keys(detailsToChange.current_map)[0]}`
-            ] = detailsToChange.current_map ;
+                `users/${uid}/current_maps/${mapId}`
+            ] = detailsToChange.current_map[mapId] ;
 
            return update(refDB, updates)
         }).then(()=> {
