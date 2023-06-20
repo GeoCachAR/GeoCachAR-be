@@ -112,12 +112,15 @@ export const updatedUserEmail = (
     updates[`users/${updateUserID}/email`] = newEmail;
     return update(refDB, updates)
         .then(() => {
+            
             return signInWithEmailAndPassword(auth, oldEmail, password);
         })
         .then(({ user }) => {
+            
             return updateEmail(user, newEmail);
         })
         .then(() => {
+            
             return newEmail;
         });
 };
