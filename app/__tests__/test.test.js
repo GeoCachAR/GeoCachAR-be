@@ -374,14 +374,14 @@ describe("PATCH /api/users/:user_id", () => {
     });
     describe("Should update completed maps list", () => {
         test("Should return 200 and update maps list for current user", () => {
-            const completedMaps = { completed_map: "100" };
+            const completedMaps = { completed_map: "102" };
             return request(app)
-                .patch(`/api/users/${uids["t99"]}`)
+                .patch(`/api/users/s6P2oIytasYVYnN4rJ84LF3YS043`)
                 .send(completedMaps)
                 .expect(200)
                 .then(({ body }) => {
                     const { maps_completed } = body;
-                    expect(maps_completed).toBe("100");
+                    expect(maps_completed).toBe("102");
                 });
         });
     });

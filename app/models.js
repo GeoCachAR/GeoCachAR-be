@@ -144,7 +144,11 @@ export const updateCompletedMaps = (detailsToChange, uid) => {
             ] = mapName;
 
             return update(refDB, updates)
-        }).then(()=> {
+        })
+        .then(() => {
+            return remove(ref(db,`users/${uid}/current_maps/${detailsToChange.completed_map}`))
+        })
+        .then(()=> {
             return detailsToChange.completed_map
         });
 };
